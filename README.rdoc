@@ -1,0 +1,24 @@
+=Batik
+Batik (http://xmlgraphics.apache.org/batik/) is a Java-based toolkit for applications or applets that want to use images in the Scalable Vector Graphics (SVG) format for various purposes, such as display, generation or manipulation.
+
+=Quick Start
+Be sure to add your batik installation to the classpath.
+
+==Rasterization
+
+  # Create a transcoder
+  transcoder = Batik::Transcoder.new
+  
+  # Transcode an svg string to a string as a PNG
+  png = transcoder.to_png(svg_document)
+
+  # Transcode an svg string to a string as a JPEG
+  jpeg = transcoder.to_jpeg(svg_document)
+
+  # Transcode an svg string to a string as a PNG with some options
+  png = transcoder.to_png(svg_document, :dpi => 600, :indexed => 8)
+
+  # Transcode an svg string to a file
+  File.open('new.png', 'wb+') { |fp|
+    fp.write(transcoder.to_png(svg_document))
+  }

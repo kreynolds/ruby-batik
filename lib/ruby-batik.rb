@@ -1,4 +1,10 @@
-require "ruby-batik/version"
+require 'java'
+require 'batik'
+require 'stringio'
 
-module RubyBatik
-end
+require 'ruby-batik/version'
+require 'ruby-batik/transcoders/abstract'
+require 'ruby-batik/transcoders/jpeg'
+require 'ruby-batik/transcoders/png'
+require 'ruby-batik/transcoders/tiff'
+require 'ruby-batik/transcoder'

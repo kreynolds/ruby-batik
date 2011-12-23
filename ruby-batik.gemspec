@@ -4,7 +4,7 @@ require "ruby-batik/version"
 
 Gem::Specification.new do |s|
   s.name        = "ruby-batik"
-  s.version     = RubyBatik::VERSION
+  s.version     = Batik::VERSION
   s.authors     = ["Kelley Reynolds"]
   s.email       = ["kelley.reynolds@rubyscale.com"]
   s.homepage    = "https://github.com/kreynolds/ruby-batik"
@@ -18,7 +18,5 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  # specify any dependencies here; for example:
   s.add_development_dependency "rspec"
-  # s.add_runtime_dependency "rest-client"
 end

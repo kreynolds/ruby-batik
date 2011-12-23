@@ -1,3 +1,3 @@
-module RubyBatik
+module Batik
   VERSION = "0.0.1"
 end
