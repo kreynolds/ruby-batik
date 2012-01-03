@@ -1,3 +1,5 @@
+java_import 'org.apache.batik.transcoder.ErrorHandler'
+
 module Batik
   class Transcoder
     def initialize(options={})
@@ -17,5 +19,21 @@ module Batik
       Transcoders::TIFF.transcode(document, @options.merge(args))
     end
     alias_method :to_tif, :to_tiff
+  end
+
+  class DefaultErrorHandler
+    include Java::OrgApacheBatikTranscoder::ErrorHandler
+
+ 	  def error(exception)
+   		raise exception
+  	end
+
+  	def fatalError(eexception)
+   		raise exception
+  	end
+
+  	def warning(exception)
+      raise exception
+  	end
   end
 end

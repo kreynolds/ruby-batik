@@ -17,7 +17,7 @@ module Batik
       
       def self.default_options
         {
-          :execute_onload => true, # true/false
+          :execute_onload => nil, # true/false
           :allowed_script_types => nil, # text/ecmascript, application/java-archive
           :constrain_script_origin => nil, # true/false
           :snapshot_time => nil,
@@ -40,22 +40,23 @@ module Batik
         out_io = StringIO.new('','w+b')
 
         transcoder = klass.new
+        transcoder.setErrorHandler(Batik::DefaultErrorHandler.new)
         options.each_pair do |key, val|
           next if val.nil?
 
-          java_type = java_type_for(key)
-          transcoder.java_send(:addTranscodingHint,
-                               [TranscodingHints::Key, java.lang.Object],
-                               transcoder.class.const_get("key_#{key}".upcase), 
-                               val.to_java(java_type))
+          transcoder.addTranscodingHint(transcoder.class.const_get("key_#{key}".upcase), val.to_java(java_type_for(key)))
         end
-        input = TranscoderInput.java_class.constructor(java.io.InputStream).new_instance(in_io.to_inputstream)
-        output = TranscoderOutput.java_class.constructor(java.io.OutputStream).new_instance(out_io.to_outputstream)
 
-        transcoder.transcode(input, output)
+        transcoder.transcode(TranscoderInput.new(in_io.to_inputstream), TranscoderOutput.new(out_io.to_outputstream))
         out_io.flush
-        out_io.rewind
-        out_io.read
+
+        # Sometimes this is closed for read. If so, we must use the #string method
+        if out_io.closed_read?
+          out_io.string
+        else
+          out_io.rewind
+          out_io.read
+        end
       end
 
       private
