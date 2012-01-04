@@ -28,7 +28,7 @@ module Batik
    		raise exception
   	end
 
-  	def fatalError(eexception)
+  	def fatalError(exception)
    		raise exception
   	end
 
