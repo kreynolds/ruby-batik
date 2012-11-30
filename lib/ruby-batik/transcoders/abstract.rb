@@ -31,6 +31,9 @@ module Batik
           :max_width => nil,
           :height => nil,
           :width => nil,
+
+          # Non-Batik options
+          :base_uri => nil # Document URI for relative path lookups
         }
       end
       
@@ -38,6 +41,9 @@ module Batik
         options = default_options.merge(process_options(options.dup))
         in_io = StringIO.new(document)
         out_io = StringIO.new('','w+b')
+
+        t_input = TranscoderInput.new(in_io.to_inputstream)
+        t_input.uri = options.delete(:base_uri)
 
         transcoder = klass.new
         transcoder.setErrorHandler(Batik::DefaultErrorHandler.new)
@@ -47,7 +53,7 @@ module Batik
           transcoder.addTranscodingHint(transcoder.class.const_get("key_#{key}".upcase), val.to_java(java_type_for(key)))
         end
 
-        transcoder.transcode(TranscoderInput.new(in_io.to_inputstream), TranscoderOutput.new(out_io.to_outputstream))
+        transcoder.transcode(t_input, TranscoderOutput.new(out_io.to_outputstream))
         out_io.flush
 
         # Sometimes this is closed for read. If so, we must use the #string method
